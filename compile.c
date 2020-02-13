@@ -4980,13 +4980,14 @@ add_ensure_iseq(LINK_ANCHOR *const ret, rb_iseq_t *iseq, int is_return)
 	    LABEL *lend = NEW_LABEL(0);
 	    INIT_ANCHOR(ensure_part);
 
-	    add_ensure_range(iseq, enlp->erange, lstart, lend);
+	    //add_ensure_range(iseq, enlp->erange, lstart, lend);
 
 	    ISEQ_COMPILE_DATA(iseq)->ensure_node_stack = enlp->prev;
 	    ADD_LABEL(ensure_part, lstart);
-            NO_CHECK(COMPILE_POPPED(ensure_part, "ensure part", enlp->ensure_node));
+        NO_CHECK(COMPILE_POPPED(ensure_part, "ensure part", enlp->ensure_node));
 	    ADD_LABEL(ensure_part, lend);
-	    ADD_SEQ(ensure, ensure_part);
+	    //ADD_SEQ(ensure, ensure_part);
+        ADD_INSNL(ensure, 0, jump, enlp->erange->end);
 	}
 	else {
 	    if (!is_return) {
