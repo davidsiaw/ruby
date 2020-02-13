@@ -599,3 +599,53 @@ assert_equal "foo", %q{
   end
   obj
 }, '[ruby-core:87830]'
+
+assert_equal "b\nensure\n", %q{
+  def meow
+    puts 'b'
+    return
+    puts 'a'
+  rescue
+    puts 'rescue'
+  ensure
+    puts 'ensure'
+    raise
+  end
+  begin
+    meow
+  rescue
+  end
+}, '[ruby-dev]'
+
+assert_equal "b\nensure\n", %q{
+  def meow
+    puts 'b'
+    return
+  rescue
+    puts 'rescue'
+  ensure
+    puts 'ensure'
+    raise
+  end
+  begin
+    meow
+  rescue
+  end
+}, '[ruby-dev]'
+
+assert_equal "b\na\nensure\n", %q{
+  def meow
+    puts 'b'
+    return if false
+    puts 'a'
+  rescue
+    puts 'rescue'
+  ensure
+    puts 'ensure'
+    raise
+  end
+  begin
+    meow
+  rescue
+  end
+}, '[ruby-dev]'
